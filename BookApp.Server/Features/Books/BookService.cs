@@ -51,5 +51,27 @@
 
             return book;
         }
+
+        public async Task<bool> Update(int id, string title, string description, string imageUrl, string authorName, double price)
+        {
+            var book = await this.data
+                .Books
+                .FirstOrDefaultAsync(b => b.Id == id);
+
+            if (book == null)
+            {
+                return false;
+            }
+
+            book.Title = title;
+            book.Description = description;
+            book.ImageUrl = imageUrl;
+            book.AuthorName = authorName;
+            book.Price = price;
+
+            await this.data.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

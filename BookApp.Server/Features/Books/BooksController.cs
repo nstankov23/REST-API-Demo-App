@@ -19,7 +19,14 @@
         [Route("{Id}")]
         public async Task<ActionResult<BookInfoServiceModel>> GetBy(int id)
         {
-            return await this.bookService.GetBy(id);
+            var book = await this.bookService.GetBy(id);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            return book;
         }
 
         [HttpPost]
@@ -33,6 +40,25 @@
                 request.Price);
 
             return Created(nameof(this.Create), bookId);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> Update(UpdateBookRequestModel request)
+        {
+            var updated = await this.bookService.Update(
+                request.Id,
+                request.Title,
+                request.Description,
+                request.ImageUrl,
+                request.AuthorName,
+                request.Price);
+
+            if (!updated)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
         }
     }
 }
