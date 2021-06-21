@@ -10,5 +10,7 @@
         Task<int> Create(string title, string description, string imageUrl, string authorName, double price);
 
         Task<bool> Update(int id, string title, string description, string imageUrl, string authorName, double price);
+
+        Task<bool> Delete(int id);
     }
 }

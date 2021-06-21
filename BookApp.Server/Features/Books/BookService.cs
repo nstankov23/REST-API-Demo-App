@@ -73,5 +73,23 @@
 
             return true;
         }
+
+        public async Task<bool> Delete(int id)
+        {
+            var book = await this.data
+                .Books
+                .FirstOrDefaultAsync(b => b.Id == id);
+
+            if (book == null)
+            {
+                return false;
+            }
+
+            this.data.Books.Remove(book);
+
+            await this.data.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

@@ -60,5 +60,19 @@
 
             return Ok();
         }
+
+        [HttpDelete]
+        [Route("{Id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var deleted = await this.bookService.Delete(id);
+
+            if (!deleted)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
     }
 }
