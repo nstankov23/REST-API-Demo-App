@@ -2,5 +2,6 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs/DemoApp/v16
-/BookApp.Server/obj
+/.vs/
+/BookApp.Server/obj/
+/BookApp.Server/bin/
