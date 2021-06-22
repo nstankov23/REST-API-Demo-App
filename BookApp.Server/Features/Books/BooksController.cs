@@ -2,6 +2,7 @@
 {
     using BookApp.Server.Features.Books.Models;
     using Microsoft.AspNetCore.Mvc;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     [ApiController]
@@ -13,6 +14,14 @@
         public BooksController(IBookService bookService)
         {
             this.bookService = bookService;
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<BookListingServiceModel>> GetAll()
+        {
+            var books = await this.bookService.GetAll();
+
+            return books;
         }
 
         [HttpGet]

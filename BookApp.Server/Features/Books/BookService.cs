@@ -4,6 +4,7 @@
     using BookApp.Server.Data.Models;
     using BookApp.Server.Features.Books.Models;
     using Microsoft.EntityFrameworkCore;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -90,6 +91,21 @@
             await this.data.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<IEnumerable<BookListingServiceModel>> GetAll()
+        {
+            var books = await this.data
+                .Books
+                .Select(b => new BookListingServiceModel
+                {
+                    Title = b.Title,
+                    ImageUrl = b.ImageUrl,
+                    Price = b.Price,
+                })
+                .ToListAsync();
+
+            return books;
         }
     }
 }
