@@ -8,6 +8,7 @@ namespace BookApp.Server
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.OpenApi.Models;
 
     public class Startup
     {
@@ -24,6 +25,17 @@ namespace BookApp.Server
                 .AddDbContext<AppDbContext>(options => options
                     .UseSqlServer(Configuration.GetConnectionString("AppDatabase")));
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc(
+                    "v1",
+                    new OpenApiInfo
+                    {
+                        Title = "BookApp API",
+                        Version = "v1"
+                    });
+            });
+
             services
                 .AddTransient<IBookService, BookService>();
 
@@ -37,6 +49,13 @@ namespace BookApp.Server
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger()
+                .UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "BookApi");
+                    options.RoutePrefix = string.Empty;
+                });
 
             app.UseRouting();
 
