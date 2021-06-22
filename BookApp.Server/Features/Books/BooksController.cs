@@ -6,9 +6,9 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    [ApiController]
-    [Route("[controller]")]
-    public class BooksController : ControllerBase
+    using static Infrastructure.WebConstants;
+
+    public class BooksController : ApiController
     {
         private readonly IBookService bookService;
 
@@ -27,7 +27,7 @@
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route(Id)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BookInfoServiceModel))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<BookInfoServiceModel>> GetBy(int id)
@@ -78,7 +78,7 @@
         }
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route(Id)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Delete(int id)
