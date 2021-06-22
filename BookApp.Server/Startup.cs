@@ -2,6 +2,7 @@ namespace BookApp.Server
 {
     using BookApp.Server.Data;
     using BookApp.Server.Features.Books;
+    using BookApp.Server.Infrastructure.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
@@ -20,28 +21,11 @@ namespace BookApp.Server
         public IConfiguration Configuration{ get; set; }
 
         public void ConfigureServices(IServiceCollection services)
-        {
-            services
-                .AddDbContext<AppDbContext>(options => options
-                    .UseSqlServer(Configuration.GetConnectionString("AppDatabase")));
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc(
-                    "v1",
-                    new OpenApiInfo
-                    {
-                        Title = "BookApp API",
-                        Version = "v1"
-                    });
-            });
-
-            services
-                .AddTransient<IBookService, BookService>();
-
-            services
-                .AddControllers();
-        }
+            => services
+                .AddDatabase(this.Configuration)
+                .AddApplicationServices()
+                .AddSwagger()
+                .AddApiControllers();
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -50,19 +34,14 @@ namespace BookApp.Server
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseSwagger()
-                .UseSwaggerUI(options =>
+            app
+                .UseSwaggerUI()
+                .UseRouting()
+                .UseEndpoints(endpoints =>
                 {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "BookApi");
-                    options.RoutePrefix = string.Empty;
-                });
-
-            app.UseRouting();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+                    endpoints.MapControllers();
+                })
+                .ApplyMigrations();
         }
     }
 }
