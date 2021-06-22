@@ -42,6 +42,7 @@
                 .Where(b => b.Id == id)
                 .Select(b => new BookInfoServiceModel
                 {
+                    Id = b.Id,
                     Title = b.Title,
                     Description = b.Description,
                     ImageUrl = b.ImageUrl,
@@ -99,6 +100,7 @@
                 .Books
                 .Select(b => new BookListingServiceModel
                 {
+                    Id = b.Id,
                     Title = b.Title,
                     ImageUrl = b.ImageUrl,
                     Price = b.Price,

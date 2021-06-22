@@ -27,7 +27,7 @@
         }
 
         [HttpGet]
-        [Route("{Id}")]
+        [Route("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BookInfoServiceModel))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<BookInfoServiceModel>> GetBy(int id)
@@ -39,7 +39,7 @@
                 return NotFound();
             }
 
-            return book;
+            return Ok(book);
         }
 
         [HttpPost]
@@ -78,7 +78,7 @@
         }
 
         [HttpDelete]
-        [Route("{Id}")]
+        [Route("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Delete(int id)
